@@ -1,82 +1,87 @@
-class CarsController < ApplicationController
-  # GET /cars
-  # GET /cars.json
+class CartsController < ApplicationController
+  # GET /carts
+  # GET /carts.json
   def index
-    @cars = Car.all
+    @carts = Cart.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @cars }
+      format.json { render :json => @carts }
     end
   end
 
-  # GET /cars/1
-  # GET /cars/1.json
+  # GET /carts/1
+  # GET /carts/1.json
   def show
-    @car = Car.find(params[:id])
-
+	begin
+    @cart = Cart.find(params[:id])
+	rescue ActiveRecord::RecordNotFound
+	logger.error "Attempt to access invalid cart #{params[:id]}"
+	redirect_to store_url, :notice => 'Invalid cart'
+	else
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @car }
+      format.json { render :json => @cart }
     end
+	end
   end
 
-  # GET /cars/new
-  # GET /cars/new.json
+  # GET /carts/new
+  # GET /carts/new.json
   def new
-    @car = Car.new
+    @cart = Cart.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @car }
+      format.json { render :json => @cart }
     end
   end
 
-  # GET /cars/1/edit
+  # GET /carts/1/edit
   def edit
-    @car = Car.find(params[:id])
+    @cart = Cart.find(params[:id])
   end
 
-  # POST /cars
-  # POST /cars.json
+  # POST /carts
+  # POST /carts.json
   def create
-    @car = Car.new(params[:car])
+    @cart = Cart.new(params[:cart])
 
     respond_to do |format|
-      if @car.save
-        format.html { redirect_to @car, :notice => 'Car was successfully created.' }
-        format.json { render :json => @car, :status => :created, :location => @car }
+      if @cart.save
+        format.html { redirect_to @cart, :notice => 'Cart was successfully created.' }
+        format.json { render :json => @cart, :status => :created, :location => @cart }
       else
         format.html { render :action => "new" }
-        format.json { render :json => @car.errors, :status => :unprocessable_entity }
+        format.json { render :json => @cart.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # PUT /cars/1
-  # PUT /cars/1.json
+  # PUT /carts/1
+  # PUT /carts/1.json
   def update
-    @car = Car.find(params[:id])
+    @cart = Cart.find(params[:id])
 
     respond_to do |format|
-      if @car.update_attributes(params[:car])
-        format.html { redirect_to @car, :notice => 'Car was successfully updated.' }
+      if @cart.update_attributes(params[:cart])
+        format.html { redirect_to @cart, :notice => 'Cart was successfully updated.' }
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
-        format.json { render :json => @car.errors, :status => :unprocessable_entity }
+        format.json { render :json => @cart.errors, :status => :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /cars/1
-  # DELETE /cars/1.json
+  # DELETE /carts/1
+  # DELETE /carts/1.json
   def destroy
-    @car = Car.find(params[:id])
-    @car.destroy
+    @cart = Cart.find(params[:id])
+    @cart.destroy
 
     respond_to do |format|
-      format.html { redirect_to cars_url }
+      format.html { redirect_to carts_url }
       format.json { head :ok }
     end
   end
